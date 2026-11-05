@@ -1,0 +1,28 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Seminar 6: нэг Author — олон Book
+model Author {
+  id    Int    @id @default(autoincrement())
+  name  String
+  email String @unique
+  books Book[] // эсрэг талын relation талбар (байхгүй бол "missing an opposite relation field")
+}
+
+// Seminar 5: Book
+model Book {
+  id          Int      @id @default(autoincrement())
+  title       String
+  price       Int
+  isAvailable Boolean  @default(true)
+  createdAt   DateTime @default(now())
+
+  authorId Int
+  author   Author @relation(fields: [authorId], references: [id])
+}
